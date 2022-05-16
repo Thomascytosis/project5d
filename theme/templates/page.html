@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block html_lang %}{{ page.lang }}{% endblock %}
+
+{% block title %}{{ SITENAME }} - {{ page.title|striptags }}{%endblock%}
+
+{% block head %}
+  {{ super() }}
+
+  {% import 'translations.html' as translations with context %}
+  {% if translations.entry_hreflang(page) %}
+    {{ translations.entry_hreflang(page) }}
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+{% if page.services %} 
+  {% include "services.html" %}
+{% elif page.about %}
+  {% include "about.html" %}
+{% elif page.portfolio %}
+  {% include "portfolio.html" %}
+{% elif page.contact %}
+  {% include "contact.html" %}
+{% elif page.team %}
+  {% include "team.html" %}
+{% elif page.prices %}
+  {% include "prices.html" %}
+{% elif page.clients %}
+  {% include "clients.html" %}
+{% else %}
+    <h1>{{ page.title }}</h1>
+    {% import 'translations.html' as translations with context %}
+    {{ translations.translations_for(page) }}
+
+    {{ page.content }}
+
+    {% if page.modified %}
+        <p>
+        Last updated: {{ page.locale_modified }}
+        </p>
+    {% endif %}
+{% endif %}
+{% endblock %}
